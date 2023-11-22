@@ -14,6 +14,7 @@
 body{
   font-family: Arial, Helvetica, sans-serif;
   /* background-color: black; */
+  overflow: hidden;
 }
 
 .hearder--container{
@@ -78,14 +79,13 @@ body{
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 5px;
-  border-radius: 5px 5px 0px 0px;
   
-  /* border-color:#a5cfce;
-  border-radius:0px;
-  border-style:none none solid;
-  border-width:0px 0px 2px; */
-  
+}
+
+.todo--list-name{
+  font-size: 22px;
+  max-inline-size: 230px;
+  overflow-x:hidden;
 }
 .remove{
   /* background-color: lightblue; */
@@ -211,4 +211,89 @@ body{
 
 .removed{
 display: none;
+}
+
+
+.b1{
+  width: 20vw;
+  position: absolute;
+  right: 50px;
+  top: 100px;
+  z-index:-10;
+}
+.b2{
+  width: 27vw;
+  position: absolute;
+  left: 60px;
+  top: 300px;
+  z-index:-10;
+}
+.b3{
+  width: 17vw;
+  position: absolute;
+  left: 900px;
+  top: 550px;
+  z-index:-10;
+}
+.b4{
+  width: 32vw;
+  position: absolute;
+  left: 500px;
+  top: 20px;
+  z-index:-10;
+}
+.b5{
+  width: 25vw;
+  position: absolute;
+  left: 450px;
+  top: 450px;
+  z-index:-10;
+}
+.b6{
+  width: 25vw;
+  position: absolute;
+  left: 50px;
+  top: 30px;
+  z-index:-10;
+}
+.b7{
+  width: 25vw;
+  position: absolute;
+  right: -20px;
+  bottom: 50px;
+  z-index:-10;
+}
+.bs1{
+  width: 5vw;
+  position: absolute;
+  right: 410px;
+  top: 550px;
+  z-index:-10;
+}
+.bs2{
+  width: 3vw;
+  position: absolute;
+  right: 1000px;
+  top: 120px;
+  z-index:-10;
+}
+.bs3{
+  width: 3vw;
+  position: absolute;
+  right: 40px;
+  top: 600px;
+  z-index:-10;
+}
+.bs4{
+  width: 10vw;
+  position: absolute;
+  right: 500px;
+  top: 300px;
+  z-index:-10;
+}
+.bimg{
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
+  pointer-events: none;
 }
