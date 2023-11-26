@@ -1,26 +1,38 @@
-import { useState } from "react";
+import React from "react";
 import data from "../data";
+import { useState } from "react";
 
 function ToDo(props) {
-
   const [toDoInput, setToDoInput] = useState('')
 
-  const [addingToDo, setAddingToDo] = useState(false)
+  const [addToDoOpener, setAddToDoOpener] = useState(false)
+
 
   
   function handleSubmit(e) {
     e.preventDefault();
-    props.innerToDo.push(toDoInput)
+    props.ToDo.push(toDoInput)
     props.rander((p) => !p )
     setToDoInput('')
-    setAddingToDo(false)
+    setAddToDoOpener(false)
   }
   
   
   function handleAddingToDo() {
-    setAddingToDo((prev) => !prev) 
-    props.rander((p) => !p )
+    setAddToDoOpener(prev => !prev);
+  };
+
+  function handleSetNotDragging(insideOutside) {
+    if (insideOutside === "inSide") {
+      props.setNotDragging(false)
+    }
+    if(insideOutside !== "inSide"){
+      props.setNotDragging(true)
+    }
+
   }
+  
+  
 
   const removeProjectList = () => {
     
@@ -35,52 +47,60 @@ function ToDo(props) {
 
   const removeToDo = (index) => {
     
-    let innerToDoArray = props.innerToDo ;
-    const i = innerToDoArray.indexOf(index);
-    if (i !== -1) {
-      innerToDoArray.splice(i, 1);
+    let ToDoArray = props.ToDo ;
+    if (index !== -1) {
+      ToDoArray.splice(index, 1);
     }
     props.rander((p) => !p )
 
   };
 
 
-  const renderInnerToDo = props.innerToDo.map((index) => {
-    
-    const randomId = Math.random() * 10
+
+  const renderToDo = props.ToDo.map((item, index) => {
     return (
-      <p className="todo" key={randomId} onClick={() => removeToDo(index)}>
-        {index}
+      <p className="todo" key={index} title="remove" onClick={() => removeToDo(index)}>
+        {item}
       </p>
     );
   });
+  
 
 
 
   return(
     <>
-      <div className="todo--list">
-
-        <div className="todo--list-header">
-          <h2>{props.name}</h2>
-          <div className="remove" onClick={() => removeProjectList()}>&#215;</div>
+      <div className="dnd--div" 
+      onPointerOver={() => handleSetNotDragging("inSide")} 
+      onPointerOut={() => handleSetNotDragging("outSide")}
+      >
+        <img src="src\assets\drag_handle_FILL0_wght400_GRAD0_opsz24.png" 
+          alt="drag here" 
+          width={35} 
+        />
+      </div>
+      <div className="todo--list" onPointerOut={() => handleSetNotDragging("outSide")}>
+        
+        <div className="todo--list-header" >
+          <h2 className="todo--list-name" title={props.name} >{props.name}</h2>
+          <div className="remove" title="remove" onClick={() => removeProjectList()}>&#215;</div>
         </div>
 
         <div className="todo--list-content">
-          {renderInnerToDo}
+          {renderToDo}
           
         </div>
-
         <div className="add-todo--container">
-          {addingToDo ?
-          <form className="add-todo--form" onSubmit={handleSubmit}>
-            <input className="todo--inp" placeholder="Add ToDo" value={toDoInput} onChange={e => setToDoInput(e.target.value)}/>
-            <button className="add-todo--btn" type="submit"  >&#10004;</button>
-          </form>
-          :
-          <button className="add-todo--btn" onClick={handleAddingToDo}>
-            &#43;
-          </button>}
+          {addToDoOpener ? (
+            <form className="add-todo--form" onSubmit={handleSubmit}>
+              <input className="todo--inp" autoFocus placeholder="Add ToDo" value={toDoInput} onChange={e => setToDoInput(e.target.value)}/>
+              <button className="add-todo--btn" title="add" type="submit"  >&#10004;</button>
+            </form> 
+          ) : (
+            <button className="add-todo--btn" title="add todo" onClick={handleAddingToDo}>
+              &#43;
+            </button>
+          )}
         </div>
 
       </div>

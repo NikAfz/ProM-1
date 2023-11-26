@@ -297,3 +297,13 @@ display: none;
   user-select: none;
   pointer-events: none;
 }
+.dnd--div{
+  /* background-color: #528646; */
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+.dnd--div > img {
+  /* background-color: #a897dd; */
+}

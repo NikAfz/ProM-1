@@ -8,43 +8,77 @@ import data from './data'
 import { useEffect, useState } from 'react'
 import Blobs from './camponents/blobs'
 
+import { DndContext, closestCenter, closestCorners } from '@dnd-kit/core'
+import { SortableContext, arrayMove, horizontalListSortingStrategy, useSortable } from '@dnd-kit/sortable'
+import { CSS } from '@dnd-kit/utilities'
+
 
 function App() {
   
-  const [dataState, setData] = useState(data)
+  const [dataState, setDataState] = useState(data)
 
   const [render,setRender] = useState(false)
 
+  const [notDragging, setNotDragging] = useState(true)
+
   useEffect(() => {
-    console.log(dataState);
     localStorage.setItem('todoData', JSON.stringify(dataState));
   }, [render]);
 
   function RenderToDo(props) {
+    const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: props.id, disabled:notDragging });
+
+    // style
+    const style = {
+      transition,
+      transform: CSS.Transform.toString(transform)
+    }
+
     return (
-      <ToDo
-        name={props.name}
-        ToDo={props.todo}
-        fullObject={props.object}
-        rander={setRender}
-      />
+      <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
+        <ToDo
+          name={props.name}
+          ToDo={props.todo}
+          fullObject={props.object}
+          rander={setRender}
+          setNotDragging={setNotDragging}
+        />
+      </div>
       
     );
   }
   
+
+
+  function onDragEnd(e) {
+    const {active, over} = e
+    if (active.id === over.id){
+      return;
+    }
+    setDataState((dataState) => {
+      const oldIndex = dataState.findIndex((i) => i.id === active.id)
+      const newIndex = dataState.findIndex((i) => i.id === over.id)
+      return arrayMove(dataState, oldIndex, newIndex);
+    })
+  }
+
+
+
   return (
     <>
       <Blobs/>
 
       <Header/>
-
-      {/* {renderToDo} */}
       <div className='todo--container'>
-        {dataState.map((item) => {
-          return(
-            <RenderToDo key={item.id} object={item} name={item.toDoName} todo={item.innerToDo} />
-          )
-        })}
+        <DndContext collisionDetection={closestCorners} onDragEnd={onDragEnd} >
+          <SortableContext items={dataState} strategy={horizontalListSortingStrategy}>
+            {dataState.map((item) => {
+              return(
+                <RenderToDo key={item.id} id={item.id} object={item} name={item.toDoName} todo={item.innerToDo}/>
+              )
+            })}
+          </SortableContext>
+        </DndContext>
       </div>
 
       <AddToDo

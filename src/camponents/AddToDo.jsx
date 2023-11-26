@@ -30,11 +30,11 @@ function AddToDo(props) {
   return(
     addingList ? 
     <form onSubmit={handleAddingNameSubmit}>
-      <button className="add--btn" type="submit" >&#10004;</button>
-      <input className="todo--name-inp" placeholder="Project name" value={listNameInput} onChange={e => setListNameInput(e.target.value)}/>
+      <button className="add--btn" title="add" type="submit" >&#10004;</button>
+      <input className="todo--name-inp" autoFocus placeholder="Project name" value={listNameInput} onChange={e => setListNameInput(e.target.value)}/>
     </form>
     : 
-    <button className="add--btn" onClick={handleAddingList}>
+    <button className="add--btn" title="add project" onClick={handleAddingList}>
       &#43;
     </button>
     
